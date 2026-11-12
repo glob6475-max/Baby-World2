@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Маленькая вселенная</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;600;700&family=Commissioner:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+ --paper:#eee9dc;
+ --ink:#393d35;
+ --sage:#858c72;
+ --clay:#bd795f;
+ --plum:#786879;
+ --muted:#969384;
+ --line:#d8d1c2;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--paper);color:var(--ink);
+ font-family:'Commissioner',sans-serif;
+}
+#lock{
+ position:fixed;inset:0;z-index:10000;
+ display:flex;align-items:center;justify-content:center;
+ background:var(--paper);padding:25px;
+}
+.lockbox{width:100%;max-width:390px;text-align:center}
+.lock-art{font-size:65px;margin-bottom:20px}
+.lockbox h1{
+ font:500 48px 'Alegreya',serif;
+ margin:0 0 8px;
+}
+.lockbox p{color:var(--muted);font-size:13px}
+input{
+ width:100%;padding:17px;
+ border:1px solid var(--line);background:transparent;
+ border-radius:3px;font:16px 'Commissioner';
+ margin-top:20px;text-align:center;outline:none;
+}
+button{
+ cursor:pointer;font-family:'Commissioner',sans-serif;
+}
+.enter{
+ width:100%;margin-top:12px;padding:17px;
+ border:0;background:var(--sage);color:white;
+ font-size:13px;letter-spacing:2px;
+}
+#error{color:var(--clay);font-size:12px}
+#site{display:none}
+header{
+ height:85px;padding:0 8%;
+ display:flex;align-items:center;justify-content:space-between;
+ border-bottom:1px solid var(--line);
+}
+.logo{font:600 25px 'Alegreya',serif}
+.logo span{color:var(--clay)}
+.small{font-size:11px;color:var(--muted);letter-spacing:2px}
+.hero{
+ min-height:660px;padding:80px 9%;
+ display:grid;grid-template-columns:1fr 1fr;
+ align-items:center;gap:35px;
+}
+.eyebrow{
+ color:var(--clay);font-size:11px;
+ letter-spacing:3px;text-transform:uppercase;
+}
+h1{
+ font:500 clamp(55px,8vw,105px)/.94 'Alegreya',serif;
+ letter-spacing:-3px;margin:25px 0;
+}
+h1 em{color:var(--sage);font-weight:400}
+.description{
+ font-size:14px;line-height:2;
+ color:#858276;max-width:350px;
+}
+.art{
+ min-height:420px;background:#dcd8c8;
+ display:flex;align-items:center;justify-content:center;
+ position:relative;overflow:hidden;
+ border-radius:48% 48% 3px 3px;
+}
+.sun{
+ position:absolute;width:190px;height:190px;
+ border-radius:50%;background:#c58b6d;
+ top:65px;right:45px;opacity:.8;
+}
+.bear{
+ font-size:155px;z-index:2;
+ animation:float 4s ease-in-out infinite;
+ cursor:pointer;
+ filter:drop-shadow(0 15px 10px #77777720);
+}
+@keyframes float{
+ 0%,100%{transform:translateY(0) rotate(-3deg)}
+ 50%{transform:translateY(-16px) rotate(3deg)}
+}
+.art-note{
+ position:absolute;bottom:22px;left:25px;
+ font:italic 20px 'Alegreya',serif;color:#777967;
+}
+section{padding:90px 9%}
+.section-head{
+ display:flex;align-items:end;
+ justify-content:space-between;
+ border-bottom:1px solid var(--line);
+ padding-bottom:22px;margin-bottom:40px;
+}
+.section-head h2{
+ font:500 45px 'Alegreya',serif;margin:0;
+}
+.section-head p{font-size:11px;color:var(--muted)}
+.friends{
+ display:grid;grid-template-columns:repeat(4,1fr);
+ gap:15px;
+}
+.friend{
+ min-height:190px;padding:25px 10px;
+ text-align:center;background:#e6e1d4;
+ transition:.3s;cursor:pointer;
+}
+.friend:hover{transform:translateY(-7px);background:#dfd9ca}
+.friend div{font-size:65px;margin:12px}
+.friend p{font:20px 'Alegreya',serif}
+.play{
+ background:#dcdccd;padding:65px 9%;
+ text-align:center;
+}
+.play h2{font:48px 'Alegreya',serif;margin:0}
+.play p{font-size:12px;color:#777967}
+.toys{
+ display:flex;justify-content:center;
+ flex-wrap:wrap;gap:18px;margin:35px 0;
+}
+.toy{
+ border:1px solid #c8c8b6;background:#eee9dc;
+ width:95px;height:95px;font-size:39px;
+ transition:.25s;
+}
+.toy:hover{transform:rotate(8deg) scale(1.08)}
+#score{font-size:12px;color:#777967}
+.love{text-align:center;padding:100px 20px}
+.love h2{font:50px 'Alegreya',serif}
+.love p{font-size:13px;color:var(--muted);line-height:2}
+footer{
+ padding:30px;text-align:center;
+ border-top:1px solid var(--line);
+ color:var(--muted);font-size:10px;letter-spacing:2px;
+}
+#message{
+ position:fixed;bottom:25px;left:50%;
+ transform:translateX(-50%);
+ background:var(--ink);color:white;
+ padding:16px 25px;font-size:13px;
+ opacity:0;transition:.3s;pointer-events:none;
+ z-index:20;
+}
+#message.show{opacity:1}
+@media(max-width:700px){
+ header{padding:0 6%;height:70px}
+ .hero{grid-template-columns:1fr;padding:65px 7%;min-height:auto}
+ .hero h1{font-size:70px}
+ .art{min-height:340px}
+ section{padding:65px 6%}
+ .friends{grid-template-columns:repeat(2,1fr)}
+ .section-head h2{font-size:34px}
+ .section-head p{max-width:100px;text-align:right}
+ .love h2{font-size:38px}
+}
+</style>
+</head>
+<body>
+
+<div id="lock">
+ <div class="lockbox">
+  <div class="lock-art">🗝️</div>
+  <h1>Тихий мир</h1>
+  <p>Маленькая вселенная открывается только своим.</p>
+  <input id="pass" type="password" placeholder="Секретный пароль">
+  <button class="enter" onclick="unlock()">ВОЙТИ ВО ВСЕЛЕННУЮ ↗</button>
+  <div id="error"></div>
+ </div>
+</div>
+
+<div id="site">
+<header>
+ <div class="logo">little <span>universe.</span></div>
+ <div class="small">9 МЕСЯЦЕВ · ♡</div>
+</header>
+
+<main>
+<div class="hero">
+ <div>
+  <div class="eyebrow">Мир одного маленького человека</div>
+  <h1>Целая<br>вселенная<br><em>внутри.</em></h1>
+  <p class="description">
+   Здесь каждый день наполнен открытиями.
+   Здесь живут добрые звери, мягкие облака
+   и самые удивительные маленькие чудеса.
+  </p>
+ </div>
+ <div class="art">
+  <div class="sun"></div>
+  <div class="bear" onclick="say('Мишка передаёт тебе привет! 🐻')">🧸</div>
+  <div class="art-note">a little piece of happiness</div>
+ </div>
+</div>
+
+<section>
+ <div class="section-head">
+  <h2>Новые друзья</h2>
+  <p>01 / Знакомство</p>
+ </div>
+ <div class="friends">
+  <div class="friend" onclick="say('Мишка говорит: привет!')">
+   <div>🐻</div><p>Мишка</p>
+  </div>
+  <div class="friend" onclick="say('Зайчик говорит: привет!')">
+   <div>🐰</div><p>Зайчик</p>
+  </div>
+  <div class="friend" onclick="say('Котик мурлычет!')">
+   <div>🐈</div><p>Котик</p>
+  </div>
+  <div class="friend" onclick="say('Уточка говорит: кря-кря!')">
+   <div>🦆</div><p>Уточка</p>
+  </div>
+ </div>
+</section>
+
+<div class="play">
+ <div class="eyebrow">02 / Маленькая игра</div>
+ <h2>Собираем чудеса</h2>
+ <p>Нажимай на предметы и наблюдай за волшебством</p>
+ <div class="toys">
+  <button class="toy" onclick="collect(this)">⭐</button>
+  <button class="toy" onclick="collect(this)">🌙</button>
+  <button class="toy" onclick="collect(this)">🌼</button>
+  <button class="toy" onclick="collect(this)">☁️</button>
+  <button class="toy" onclick="collect(this)">🦋</button>
+ </div>
+ <div id="score">Найдено чудес: 0</div>
+</div>
+
+<div class="love">
+ <div class="eyebrow">03 / Самое главное</div>
+ <h2>Ты — наше чудо.</h2>
+ <p>
+  Расти, исследуй, удивляйся.<br>
+  Впереди целый огромный мир.<br>
+  И мы всегда рядом. ♡
+ </p>
+ <div style="font-size:45px;margin-top:25px">🌿 🧸 🌿</div>
+</div>
+</main>
+<footer>MADE WITH LOVE · LITTLE UNIVERSE</footer>
+</div>
+
+<div id="message"></div>
+
+<script>
+function unlock(){
+ const value=document.getElementById('pass').value;
+ if(value==='шурик9'){
+  document.getElementById('lock').style.display='none';
+  document.getElementById('site').style.display='block';
+ }else{
+  document.getElementById('error').textContent='Попробуй ещё раз.';
+  document.getElementById('pass').value='';
+ }
+}
+document.getElementById('pass').addEventListener('keydown',e=>{
+ if(e.key==='Enter')unlock();
+});
+let score=0;
+function say(t){
+ const m=document.getElementById('message');
+ m.textContent=t;
+ m.classList.add('show');
+ setTimeout(()=>m.classList.remove('show'),1900);
+}
+function collect(el){
+ score++;
+ document.getElementById('score').textContent='Найдено чудес: '+score;
+ el.style.transform='scale(.75) rotate(15deg)';
+ setTimeout(()=>el.style.transform='',250);
+ say('Какое красивое чудо! ✨');
+}
+</script>
+</body>
+</html>
